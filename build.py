@@ -16,6 +16,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SRC  = os.path.join(HERE, "src")
 
 OK = '<svg viewBox="0 0 24 24"><path d="M20 6.5L9.4 17.1 4 11.7"/></svg>'
+import time; STAMP = time.strftime("%Y%m%d%H%M")   # ?v= nos css/js: cada build fura o cache
+def stamp(html): return re.sub(r'(assets/(?:css|js)/[\w.-]+\.(?:css|js))"', lambda m: m.group(1) + "?v=" + STAMP + '"', html)
 
 def read(p):  return io.open(p, encoding="utf-8").read()
 def write(p, s):
@@ -152,7 +154,7 @@ def page(lang, name, title, desc, alt, main):
                   .replace("{{lang}}", "pt-BR" if lang == "pt" else "en")
                   .replace("{{alt_lang}}", "en" if lang == "pt" else "pt-BR")
                   .replace("{{alt}}", alt).replace("{{base}}", L["base"]))
-    write(os.path.join(HERE, L["dir"], name), fill(html, L))
+    write(os.path.join(HERE, L["dir"], name), stamp(fill(html, L)))
     count += 1
 
 # ---------- páginas escritas à mão ----------
