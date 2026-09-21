@@ -1,0 +1,47 @@
+<header class="hdr">
+  <div class="wrap wide">
+    <a class="logo" href="[[p:index]]" aria-label="{{marca}}"><img class="hz l" src="{{base}}assets/img/brand/horizontal-light.svg" alt="{{marca}}" width="1328" height="387"><img class="hz d" src="{{base}}assets/img/brand/horizontal-dark.svg" alt="{{marca}}" width="1328" height="387"></a>
+
+    <ul class="nav">
+      <li><a href="[[p:index]]">[[nav.home]]</a></li>
+      <li class="has">
+        <button type="button">[[nav.segments]] <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="menu">
+          <a href="[[p:seg-barbers]]">[[seg.barbers]]<small>[[seg.barbers.sub]]</small></a>
+          <a href="[[p:seg-salons]]">[[seg.salons]]<small>[[seg.salons.sub]]</small></a>
+          <a href="[[p:seg-clinics]]">[[seg.clinics]]<small>[[seg.clinics.sub]]</small></a>
+        </div>
+      </li>
+      <li><a href="[[p:pricing]]">[[nav.pricing]]</a></li>
+    </ul>
+
+    <div class="right">
+      <a class="lang" href="{{alt}}" hreflang="{{alt_lang}}" title="[[lang.title]]">[[lang.label]]</a>
+      <button class="tbtn" aria-label="[[theme.label]]" title="[[theme.label]]"><svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 1.8v2.4M12 19.8v2.4M1.8 12h2.4M19.8 12h2.4M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M19.1 4.9l-1.7 1.7M6.6 17.4l-1.7 1.7"/></svg><svg class="moon" viewBox="0 0 24 24"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z"/></svg></button>
+      <a class="btn ghost" href="[[p:signin]]">[[nav.signin]]</a>
+      <a class="btn sm acc" href="[[p:signup]]">[[nav.start]] <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></a>
+      <button class="burger" aria-label="[[nav.menu]]" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<nav class="mnav" aria-label="[[nav.menu]]">
+  <a href="[[p:index]]">[[nav.home]]</a>
+  <div class="grp"><span class="eyebrow">[[nav.segments]]</span>
+    <div class="sub">
+      <a href="[[p:seg-barbers]]">[[seg.barbers]]</a>
+      <a href="[[p:seg-salons]]">[[seg.salons]]</a>
+      <a href="[[p:seg-clinics]]">[[seg.clinics]]</a>
+    </div>
+  </div>
+  <a href="[[p:pricing]]">[[nav.pricing]]</a>
+  <a href="[[p:signin]]">[[nav.signin]]</a>
+  <div class="tools">
+    <a class="lang" href="{{alt}}" hreflang="{{alt_lang}}">[[lang.label]]</a>
+    <button class="tbtn" aria-label="[[theme.label]]"><svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 1.8v2.4M12 19.8v2.4M1.8 12h2.4M19.8 12h2.4M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M19.1 4.9l-1.7 1.7M6.6 17.4l-1.7 1.7"/></svg><svg class="moon" viewBox="0 0 24 24"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z"/></svg></button>
+  </div>
+  <div class="btns">
+    <a class="btn acc" href="[[p:signup]]">[[nav.start]]</a>
+    <a class="btn line" href="[[p:pricing]]">[[nav.pricing]]</a>
+  </div>
+</nav>
