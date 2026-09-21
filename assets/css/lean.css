@@ -70,7 +70,7 @@
 .faqs summary i{ width:22px; height:22px; border-radius:50%; border:1px solid var(--line); position:relative; flex:none; transition:transform .3s var(--ease), border-color .2s }
 .faqs summary i::before,.faqs summary i::after{ content:''; position:absolute; left:50%; top:50%; width:9px; height:1.5px; background:var(--ink); transform:translate(-50%,-50%) }
 .faqs summary i::after{ transform:translate(-50%,-50%) rotate(90deg) }
-.faqs details[open] summary i{ transform:rotate(45deg); border-color:var(--acc) }
+.faqs details[open]:not(.js) summary i, .faqs details.on summary i{ transform:rotate(45deg); border-color:var(--acc) }
 .faqs .a{ color:var(--mut); font-size:15px; line-height:1.65; padding:0 0 18px; max-width:60ch }
 
 /* ---------- rodapé curto ---------- */
@@ -283,13 +283,15 @@ html.js .mosaic:not(.in) .tile{ opacity:0; transform:translateY(22px) scale(.985
 html.js .essGrid:not(.in) .ess{ opacity:0; transform:translateY(14px) }
 .essGrid.settled .ess{ transition-delay:0s }
 /* FAQ: abre e fecha com altura animada e resposta em fade */
-.faqs details .wrapA{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .42s var(--ease) }
-.faqs details[open]:not(.closing) .wrapA{ grid-template-rows:1fr }
+.faqs details .wrapA{ display:grid; grid-template-rows:0fr; padding-bottom:0; transition:grid-template-rows .42s var(--ease), padding-bottom .42s var(--ease) }
+.faqs details.on .wrapA{ grid-template-rows:1fr; padding-bottom:18px }
+.faqs details .wrapA > .a{ padding-bottom:0 }
 .faqs details .wrapA > .a{ min-height:0; overflow:hidden; opacity:0; transform:translateY(-4px); transition:opacity .32s var(--ease), transform .32s var(--ease) }
-.faqs details[open]:not(.closing) .wrapA > .a{ opacity:1; transform:none; transition-delay:.08s }
+.faqs details.on .wrapA > .a{ opacity:1; transform:none; transition-delay:.08s }
+.faqs details .wrapA > .a{ transition-delay:0s }
 .faqs summary{ transition:color .2s var(--ease) } .faqs summary:hover{ color:var(--acc) } .faqs summary:hover i{ border-color:var(--acc) }
 .faqs summary i{ transition:transform .45s var(--ease), border-color .25s var(--ease), background .25s var(--ease) }
-.faqs details[open] summary i{ background:color-mix(in oklab, var(--acc) 12%, transparent) }
+.faqs details.on summary i{ background:color-mix(in oklab, var(--acc) 12%, transparent) }
 @media (prefers-reduced-motion:reduce){
   .cmp .hd > *, .cmp .rows li, .card.cycle .rw, .mosaic .tile, .essGrid .ess, .tier .extra > span, .faqs details .wrapA, .faqs details .wrapA > .a{ transition:none !important }
 }

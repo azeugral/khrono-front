@@ -125,7 +125,7 @@ html.js [data-reveal]:not(.in) .hub .core{ transform:translate(-50%,-50%) scale(
 
 /* ---------- FAQ com abertura animada ---------- */
 .faq details .wrapA{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .36s var(--ease) }
-.faq details.opening .wrapA,.faq details[open]:not(.closing) .wrapA{ grid-template-rows:1fr }
+.faq details.on .wrapA{ grid-template-rows:1fr }
 .faq details .wrapA > .a{ min-height:0; overflow:hidden }
 .faq summary i{ transition:background .3s var(--ease) }
 .faq summary i::after{ transition:opacity .25s var(--ease) }

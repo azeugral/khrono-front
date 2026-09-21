@@ -164,24 +164,20 @@
     logos.appendChild(track);
   }
 
-  /* ---------- FAQ com abertura animada ---------- */
+  /* ---------- FAQ com abertura animada ----------
+     <details> fechado não renderiza o conteúdo, então a altura não tem de onde animar. Mantemos open=true
+     e guardamos o estado em .on: o grid anima 0fr -> 1fr nos dois sentidos. */
   $$('.faq details, .faqs details').forEach(d=>{
-    const a = $('.a', d);
-    if(!a) return;
+    const a = $('.a', d), s = $('summary', d);
+    if(!a || !s) return;
     const w = document.createElement('div'); w.className = 'wrapA';
     d.insertBefore(w, a); w.appendChild(a);
-    const s = $('summary', d);
+    const on = d.open; d.open = true; d.classList.add('js');
+    d.classList.toggle('on', on); s.setAttribute('aria-expanded', String(on));
     s.addEventListener('click', e=>{
-      if(reduce) return;
       e.preventDefault();
-      if(d.open){
-        d.classList.add('closing');
-        const done = ()=>{ d.open = false; d.classList.remove('closing'); w.removeEventListener('transitionend', done); };
-        w.addEventListener('transitionend', done);
-        setTimeout(done, 420);
-      } else {
-        d.open = true;
-      }
+      const next = !d.classList.contains('on');
+      d.classList.toggle('on', next); s.setAttribute('aria-expanded', String(next));
     });
   });
 
