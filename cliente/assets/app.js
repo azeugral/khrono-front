@@ -71,7 +71,7 @@
       <main><div class="wrap" id="view"></div></main>
       <div id="toast"></div>`;
     $('#theme').addEventListener('click', ()=>{
-      const r = document.documentElement, sys = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      const r = document.documentElement, sys = 'light';   /* padrão do produto: claro, independente do sistema */
       const next = (r.dataset.theme || sys) === 'dark' ? 'light' : 'dark';
       const apply = ()=>{ r.dataset.theme = next; try{ localStorage.setItem('theme', next); }catch(e){} };
       document.startViewTransition ? document.startViewTransition(apply) : apply();

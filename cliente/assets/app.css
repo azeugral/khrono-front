@@ -14,7 +14,7 @@
   --acc:#6FB596; --acc-dk:#8CC7AC; --acc-soft:rgba(111,181,150,.12); --acc-line:rgba(111,181,150,.34); --acc-on:#0F1A15;
   --ok:#7CC9A4; --warn:#D9A441; --bad:#E07A6E; --on-ink:#141311; --shadow:0 20px 50px -28px rgba(0,0,0,.6); color-scheme:dark;
 }
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+@media all{ :root[data-theme="dark"]{
   --bg:#141311; --paper:#1B1A17; --fossil:#242219; --line:#2F2C26; --line2:#262420;
   --ink:#F1EDE4; --mut:#A59F92; --dim:#716B60;
   --acc:#6FB596; --acc-dk:#8CC7AC; --acc-soft:rgba(111,181,150,.12); --acc-line:rgba(111,181,150,.34); --acc-on:#0F1A15;
@@ -65,7 +65,7 @@ main{ animation:vIn .3s var(--ease) both }
 .ib:active{ transform:scale(.94) }
 .ib svg{ width:15px; height:15px; fill:none; stroke:currentColor; stroke-width:1.7; grid-area:1/1 }
 .ib .moon{ display:none } :root[data-theme="dark"] .ib .sun{ display:none } :root[data-theme="dark"] .ib .moon{ display:block }
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .ib .sun{ display:none } :root:not([data-theme="light"]) .ib .moon{ display:block } }
+@media all{ :root[data-theme="dark"] .ib .sun{ display:none } :root[data-theme="dark"] .ib .moon{ display:block } }
 .ib.user{ font-size:12px; font-weight:600; color:var(--acc); background:var(--acc-soft); border-color:var(--acc-line) }
 .top .cta{ display:none }
 
@@ -200,7 +200,7 @@ main{ padding:20px 0 40px }
 .powered span{ font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--dim) }
 .powered img{ height:10px; width:auto; display:block } .powered img.d{ display:none }
 :root[data-theme="dark"] .powered img.l{ display:none } :root[data-theme="dark"] .powered img.d{ display:block }
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .powered img.l{ display:none } :root:not([data-theme="light"]) .powered img.d{ display:block } }
+@media all{ :root[data-theme="dark"] .powered img.l{ display:none } :root[data-theme="dark"] .powered img.d{ display:block } }
 
 /* ---------- início focado em agendar ---------- */
 .ctaBox{ display:block; margin-top:22px; padding:20px 18px 18px; border-radius:20px; background:var(--acc); color:var(--acc-on); position:relative; overflow:hidden; transition:transform .25s var(--ease), box-shadow .25s var(--ease) }
