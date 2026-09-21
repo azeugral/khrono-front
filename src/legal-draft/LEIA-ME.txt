@@ -1,3 +1,0 @@
-Minutas dos Termos de uso e da Politica de privacidade (v1.0), retiradas do site em 21/09/2026 a pedido do usuario.
-Para publicar de novo: mover os arquivos de volta para src/pages/<lang>/ com o nome original, restaurar os links no rodape (src/partials/footer.html) e no cadastro, e rodar build.py.
-O .docx para revisao juridica esta em PROJETOS LRGZ/_legal/.
