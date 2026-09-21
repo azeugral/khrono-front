@@ -80,3 +80,10 @@ Se as rotas forem servidas sem `.html`, basta um rewrite; o front não precisa m
 
 Só uma integração: o formulário **Criar conta** → `POST /auth/signup` e redirecionar para o painel.
 O botão "Abrir página de exemplo" pode apontar para um `/b/<slug-demo>/` real.
+
+
+## Aceite dos Termos de agendamento (cliente final)
+- Página `termos.html` (view `termos` em `app.js`) monta o documento a partir de `BUSINESS`: `nome`, `endereco`, `whatsapp`, `sinal`/`sinalRegra`, `politica.{cancelamento,atraso,falta}`, `juridico.{razao,cnpj,responsavel,emailPrivacidade}`, `termosVersao`, `termosData`.
+- No passo 5 do agendamento há a caixa obrigatória `#fAceite`; sem ela o botão de confirmar fica desabilitado (`can()`).
+- Cada agendamento salvo leva `aceite:{versao, em}` (ISO 8601). O back-end deve gravar também o IP e o user-agent e guardar o registro pelo prazo prescricional.
+- Se `termosVersao` mudar, o front pede novo aceite automaticamente (o checkbox nasce desmarcado a cada agendamento).

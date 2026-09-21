@@ -50,7 +50,7 @@
     return null;
   }
   const S = { cat:'Todos', revs:4, user:store.get('user',null), ags:store.get('agendamentos',[]) };
-  const A = Object.assign({ passo:1, svc:[], pro:null, data:null, hora:null, nome:'', tel:'', obs:'', codigo:'' }, store.get('ag', {}));
+  const A = Object.assign({ passo:1, svc:[], pro:null, data:null, hora:null, nome:'', tel:'', obs:'', codigo:'', aceite:false }, store.get('ag', {}));
   if(A.data){ const [y,m,d] = String(A.data).slice(0,10).split('-').map(Number); A.data = new Date(y, m-1, d); } /* local, não UTC */
   const saveA = ()=> store.set('ag', Object.assign({}, A, { data: A.data ? iso(A.data) : null, codigo:'' }));
   let mes = new Date();
@@ -82,6 +82,44 @@
   /* ---------- páginas ---------- */
   const rowSvc = s => `<a class="row hit" href="agendar.html?s=${s.id}${EXP?'&estado=expirado':''}"><span style="min-width:0"><span class="nm">${s.nome}</span><span class="sub">${s.sub}</span></span><span class="end"><span class="price">${brl(s.preco)}</span><span class="durn">${dur(s.dur)}</span></span>${I.chev}</a>`;
   const V = {
+    termos: ()=>{
+      const J = B.juridico||{}, P = B.politica||{}, quem = J.razao ? `<b>${J.razao}</b>${J.cnpj?`, CNPJ ${J.cnpj},`:','} nome fantasia <b>${B.nome}</b>` : `<b>${B.nome}</b>`;
+      const mail = J.emailPrivacidade || null, tel = B.whatsapp ? B.whatsapp.replace(/^55(\d{2})(\d{4,5})(\d{4})$/, '($1) $2-$3') : '';
+      const sec = (h, ...ps) => `<section class="sec legal"><h2 class="h3">${h}</h2>${ps.map(x=>`<p>${x}</p>`).join('')}</section>`;
+      return `<div class="pageHead"><span class="eyebrow">Legal</span><h1 class="h2">Termos de agendamento e aviso de privacidade</h1><p>Versão ${B.termosVersao||'1.0'} — vigente a partir de ${B.termosData||''}. Ao confirmar um agendamento você declara que leu e aceita este documento.</p></div>
+      ${sec('1. Quem é quem',
+        `Esta página de agendamento pertence a ${quem}${B.endereco?`, com atendimento em ${B.endereco}`:''} (“Estabelecimento”). É o Estabelecimento quem presta o serviço, define preços, horários e políticas, e é o <b>controlador</b> dos seus dados pessoais.`,
+        `A tecnologia da agenda é fornecida pela plataforma <b>Khrono</b> (Gabriel Icaro de Andrade Pequeno Desenvolvimento de Software LTDA, CNPJ 59.685.006/0001-92), que atua como <b>operadora</b>: trata seus dados apenas para que o agendamento funcione, conforme as instruções do Estabelecimento.`)}
+      ${sec('2. O agendamento',
+        `Ao escolher serviço, profissional, data e horário e confirmar, você reserva aquele horário com o Estabelecimento. A confirmação e o comprovante são enviados para o contato informado.`,
+        `Os preços exibidos são os praticados pelo Estabelecimento na data do agendamento e podem variar conforme avaliação presencial, quando o serviço assim exigir; qualquer diferença é informada antes do atendimento.`,
+        B.sinal ? `<b>Sinal:</b> este Estabelecimento pede um sinal de ${Math.round(B.sinal*100)}% do valor para garantir o horário.${B.sinalRegra?' '+B.sinalRegra:''}` : `Este Estabelecimento não cobra sinal para reservar o horário.`)}
+      ${sec('3. Cancelamento, remarcação, atraso e falta',
+        `<b>Cancelamento e remarcação:</b> ${P.cancelamento||'conforme informado pelo Estabelecimento.'}`,
+        `<b>Atraso:</b> ${P.atraso||'conforme informado pelo Estabelecimento.'}`,
+        `<b>Falta:</b> ${P.falta||'conforme informado pelo Estabelecimento.'}`,
+        `O Estabelecimento pode precisar remarcar por imprevisto (doença do profissional, falta de energia, força maior). Nesse caso você é avisado o quanto antes e o sinal, se houver, é devolvido ou aproveitado no novo horário.`)}
+      ${sec('4. Comunicações',
+        `Você receberá mensagens automáticas ligadas ao seu horário: confirmação ao agendar, lembrete antes do atendimento e, se o Estabelecimento usar esse recurso, um aviso quando for hora de retornar. Elas são enviadas em nome do Estabelecimento e você pode pedir para não recebê-las a qualquer momento; nesse caso, fica responsável por lembrar do horário.`,
+        `Não enviamos publicidade de terceiros. Comunicações promocionais do próprio Estabelecimento só com o seu consentimento.`)}
+      ${sec('5. Dados que coletamos e para quê',
+        `<b>Para agendar:</b> nome, telefone${tel?'':''} e/ou e-mail, serviço, profissional, data e horário e a observação que você escrever. Base legal: execução do contrato de prestação de serviço com o Estabelecimento (LGPD, art. 7º, V).`,
+        `<b>Histórico:</b> seus atendimentos anteriores, preferências e, se o Estabelecimento usar a ficha, anotações e fotos de antes e depois — estas últimas só com o seu consentimento específico, que pode ser retirado a qualquer momento.`,
+        `<b>Área do cliente (opcional):</b> se você entrar com sua conta Google, guardamos o identificador dessa conta para ligar seus agendamentos e, quando o Estabelecimento oferecer, seus pontos de fidelidade. Agendar não exige criar conta.`,
+        `<b>Registros técnicos:</b> data, hora e endereço IP do agendamento e do aceite deste documento, para segurança e cumprimento do Marco Civil da Internet.`)}
+      ${sec('6. Com quem os dados são compartilhados',
+        `Com a plataforma Khrono e os fornecedores necessários para o serviço funcionar (hospedagem em nuvem, envio de mensagens, meio de pagamento quando houver sinal), sempre sob contrato e só para essa finalidade. Com autoridades, quando a lei exigir. <b>Seus dados não são vendidos</b> nem usados por outros estabelecimentos.`)}
+      ${sec('7. Por quanto tempo',
+        `Enquanto você for cliente do Estabelecimento e pelo prazo necessário para cumprir obrigações legais (registros fiscais e de acesso). Você pode pedir a exclusão a qualquer momento; o que a lei obrigar a guardar fica bloqueado até o fim do prazo legal.`)}
+      ${sec('8. Seus direitos',
+        `Você pode confirmar se seus dados são tratados, acessá-los, corrigi-los, pedir anonimização, bloqueio ou exclusão, pedir portabilidade, revogar consentimento e se opor a tratamentos baseados em legítimo interesse (LGPD, art. 18).`,
+        `Para exercer: fale com o Estabelecimento${tel?` pelo WhatsApp ${tel}`:''}${mail?` ou pelo e-mail <b>${mail}</b>`:''}. Se preferir, escreva para a plataforma em <b>privacidade@khrono.tech</b>, que encaminha o pedido ao Estabelecimento. Você também pode recorrer à Autoridade Nacional de Proteção de Dados (ANPD).`)}
+      ${sec('9. Menores de idade',
+        `Agendamentos para menores de 18 anos devem ser feitos pelo responsável legal, que responde pelas informações fornecidas e pelo acompanhamento, quando exigido pelo Estabelecimento.`)}
+      ${sec('10. Alterações',
+        `Este documento pode ser atualizado. A versão vigente fica sempre nesta página, com número e data; alterações relevantes são informadas no próximo agendamento.`)}
+      <p class="mut sm" style="margin-top:8px">Agenda por Khrono · plataforma operada por Gabriel Icaro de Andrade Pequeno Desenvolvimento de Software LTDA · Av. Paulista, 1106, Sala 01, Andar 16, São Paulo/SP.</p>`;
+    },
     inicio(){
       const st = agora(), nxt = proximo();
       const proTxt = A.pro ? pro(A.pro).nome : null, svcTxt = A.svc.length ? A.svc.map(id=>svc(id).nome).join(' + ') : null;
@@ -167,7 +205,7 @@
     }
     return out;
   }
-  const can = ()=> [null, A.svc.length>0, A.svc.length>0 || !!A.pro, !!A.data, A.hora!==null, A.nome.trim().length>1 && A.tel.replace(/\D/g,'').length>=10, A.codigo.length===4][A.passo];
+  const can = ()=> [null, A.svc.length>0, A.svc.length>0 || !!A.pro, !!A.data, A.hora!==null, A.nome.trim().length>1 && A.tel.replace(/\D/g,'').length>=10 && !!A.aceite, A.codigo.length===4][A.passo];
   function step(){
     const p = P[A.passo-1].slice(); if(A.passo===1 && A.pro) p[1] = 'O que vai fazer com ' + pro(A.pro).nome.split(' ')[0] + '?';
     return `<div class="steps">${P.map((_,i)=>`<i class="${i<A.passo?'on':''}"></i>`).join('')}</div>
@@ -194,7 +232,8 @@
       <div class="fld"><label>Seu nome</label><input class="inp" id="fNome" value="${A.nome}" placeholder="Como quer ser chamado" autocomplete="name"></div>
       <div class="fld"><label>WhatsApp</label><input class="inp" id="fTel" value="${A.tel}" placeholder="(11) 99999-9999" inputmode="tel" autocomplete="tel"></div>
       <div class="fld"><label>Observação (opcional)</label><input class="inp" id="fObs" value="${A.obs}" placeholder="Alergia, preferência, primeira vez…"></div>
-      ${B.sinal?`<p class="mut sm">Sinal de <b class="mono" style="color:var(--ink)">${brl(Math.round(total()*B.sinal))}</b> para garantir o horário.${B.sinalRegra?' '+B.sinalRegra:''}</p>`:''}`,
+      ${B.sinal?`<p class="mut sm">Sinal de <b class="mono" style="color:var(--ink)">${brl(Math.round(total()*B.sinal))}</b> para garantir o horário.${B.sinalRegra?' '+B.sinalRegra:''}</p>`:''}
+      <label class="chk"><input type="checkbox" id="fAceite" ${A.aceite?'checked':''}><span>Li e aceito os <a class="link" href="termos.html" target="_blank" rel="noopener">Termos de agendamento e o Aviso de privacidade</a> de ${B.nome}.</span></label>`,
     6: ()=> `<p class="chint">Código enviado para <b>${A.tel}</b>.</p><div class="code">${[0,1,2,3].map(i=>`<input inputmode="numeric" maxlength="1" data-c="${i}" value="${A.codigo[i]||''}" aria-label="dígito ${i+1}">`).join('')}</div><p class="chint dimc">Nesta demonstração o código é <b>${demoCode()}</b>.</p>`
   };
   function receipt(){
@@ -205,10 +244,10 @@
       <div class="btns" style="margin-top:16px;justify-content:center"><button class="btn line" id="novo">Marcar outro</button><a class="btn acc" href="perfil.html">Ver no perfil</a></div></div>`;
   }
   function confirmar(){
-    S.ags.push({ codigo:'AG-'+String(1000+Math.floor(seed(iso(A.data)+A.hora+A.tel)*9000)), svc:[...A.svc], pro:A.pro, data:iso(A.data), hora:toH(A.hora), dur:bloco(), total:total(), nome:A.nome, tel:A.tel, obs:A.obs });
+    S.ags.push({ codigo:'AG-'+String(1000+Math.floor(seed(iso(A.data)+A.hora+A.tel)*9000)), svc:[...A.svc], pro:A.pro, data:iso(A.data), hora:toH(A.hora), dur:bloco(), total:total(), nome:A.nome, tel:A.tel, obs:A.obs, aceite:{ versao:B.termosVersao||'1.0', em:new Date().toISOString() } });
     store.set('agendamentos', S.ags); A.passo = 7; saveA(); paint(); scrollTo({top:0, behavior:'smooth'}); say('Agendamento confirmado');
   }
-  const reset = (s,p)=>{ Object.assign(A, {passo: s?2:1, svc: s?[s]:[], pro: p||null, data:null, hora:null, codigo:''}); mes = new Date(); saveA(); };
+  const reset = (s,p)=>{ Object.assign(A, {passo: s?2:1, svc: s?[s]:[], pro: p||null, data:null, hora:null, codigo:'', aceite:false}); mes = new Date(); saveA(); };
   const go = ()=>{ saveA(); paint(); scrollTo({top:0, behavior:'smooth'}); if(A.passo===6) setTimeout(()=>{ const c = $('[data-c="0"]'); if(c) c.focus({preventScroll:true}); }, 350); };
 
   /* ---------- eventos ---------- */
@@ -243,6 +282,7 @@
     if(t.id==='fNome'){ A.nome = t.value; saveA(); $('#next').disabled = !can(); }
     if(t.id==='fTel'){ let v = t.value.replace(/\D/g,'').slice(0,11); if(v.length>6) v = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`; else if(v.length>2) v = `(${v.slice(0,2)}) ${v.slice(2)}`; t.value = v; A.tel = v; saveA(); $('#next').disabled = !can(); }
     if(t.id==='fObs'){ A.obs = t.value; saveA(); }
+    if(t.id==='fAceite'){ A.aceite = t.checked; saveA(); $('#next').disabled = !can(); }
     if(t.dataset.c !== undefined){ t.value = t.value.replace(/\D/g,'').slice(-1); t.classList.remove('err'); const ins = $$('.code input'); A.codigo = ins.map(i=>i.value).join(''); if(t.value && +t.dataset.c<3) ins[+t.dataset.c+1].focus(); $('#next').disabled = !can(); if(A.codigo.length===4){ if(A.codigo===demoCode()) setTimeout(confirmar,200); else erro(); } }
   });
   document.addEventListener('keydown', e=>{ const t = e.target; if(t.dataset && t.dataset.c!==undefined && e.key==='Backspace' && !t.value && +t.dataset.c>0) $$('.code input')[+t.dataset.c-1].focus(); });

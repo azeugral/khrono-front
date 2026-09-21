@@ -13,6 +13,15 @@ window.BUSINESS = {
   antecedenciaMin:60, janelaDias:60,
   /* sinal: fração do total (0 = não cobra). sinalRegra: texto livre do proprietário sobre como funciona (reembolso, prazo, forma). Vazio = não mostra regra. */
   sinal:0, sinalRegra:"",
+  /* políticas do estabelecimento, exibidas nos Termos de agendamento (texto livre do proprietário) */
+  politica:{
+    cancelamento:"Cancele ou remarque com pelo menos 12 horas de antecedência, pelo comprovante do agendamento ou pelo WhatsApp do estabelecimento.",
+    atraso:"Tolerância de 10 minutos. Depois disso o atendimento pode ser reduzido para não atrasar o próximo cliente, ou remarcado.",
+    falta:"Faltas sem aviso podem ser consideradas na aceitação de novos agendamentos."
+  },
+  /* identificação do responsável pelo estabelecimento (controlador dos dados dos clientes). Vazio = mostra só o nome fantasia. */
+  juridico:{ razao:"", cnpj:"", responsavel:"", emailPrivacidade:"" },
+  termosVersao:"1.0", termosData:"21 de setembro de 2026",
   categorias:["Facial","Corporal","Sobrancelhas & cílios","Pacotes"],
   servicos:[
     {id:"f1",cat:"Facial",nome:"Limpeza de pele profunda",sub:"Vapor, extração, alta frequência e máscara",preco:180,dur:70},
