@@ -48,7 +48,7 @@
   /* ---------- revelação na rolagem ---------- */
   const SEL = [
     '.hero .wrap > *', '.pageHead .wrap > *',
-    '.secHead', '.card', '.q:not(.hide)', '.post', '.plan', '.tier',
+    '.secHead', '.card', '.q:not(.hide)', '.post', '.plan', '.cmp', '.vtabs.bill',
     '.split > .txt', '.split > .vis', '.trust > div', '.feat > div',
     '.numbers .n', '.person', '.faq details', '.form', '.status', '.prose > *',
     '.compare', '.apps > .card', '.chips', '.dash', '.phoneWrap', '.collage .col', '.photo', '.mosaic', '.seg', '.essGrid', '.quote', '.fact', '.one', '.faqs details', '.phones'
@@ -63,13 +63,16 @@
     groups.set(p, n + 1);
     el.setAttribute('data-reveal', '');
   });
+  /* índice dos filhos que entram escalonados dentro de um bloco revelado */
+  $$('.mosaic .tile, .cmp .hd > *, .cmp .rows li, .card.cycle .rw, .essGrid .ess, .facts .fact').forEach(el=> el.style.setProperty('--k', [...el.parentElement.children].indexOf(el)));
   if(reduce || !('IntersectionObserver' in window)){
-    items.forEach(el=> el.classList.add('in'));
+    items.forEach(el=> el.classList.add('in', 'settled'));
   } else {
     const io = new IntersectionObserver(entries=>{
       entries.forEach(en=>{
         if(!en.isIntersecting) return;
         en.target.classList.add('in');
+        setTimeout(()=> en.target.classList.add('settled'), 1800);   // depois da entrada, filhos voltam a reagir sem atraso (hover)
         io.unobserve(en.target);
         if(en.target.matches('.numbers .n, .trust > div')) countUp(en.target);
         $$('[data-count]', en.target).forEach(countEl);
@@ -162,7 +165,7 @@
   }
 
   /* ---------- FAQ com abertura animada ---------- */
-  $$('.faq details').forEach(d=>{
+  $$('.faq details, .faqs details').forEach(d=>{
     const a = $('.a', d);
     if(!a) return;
     const w = document.createElement('div'); w.className = 'wrapA';
